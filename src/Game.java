@@ -112,7 +112,9 @@ public class Game {
   }
 
   public Move parseMove(String san) {
-    if (san.charAt(1) < 'a' || san.charAt(0) > 'h' || san.charAt(1) < '1' || san.charAt(1) > '8') {
+    char letter = Character.toLowerCase(san.charAt(0));
+    char digit = san.charAt(1);
+    if (san.length() > 2 || letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
       return null;
     }
     int y = san.charAt(0) - 'a';
