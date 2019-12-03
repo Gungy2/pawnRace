@@ -1,16 +1,50 @@
+import java.util.Scanner;
+
 public class PawnRace {
   public static void main(String[] args) {
-    Board board = new Board ('a', 'd');
-    /*var from = board.getSquare(1, 1);
-    var to = board.getSquare(2, 1);
-    var move = new Move(from, to, true, true);*/
+    while (true) {
+      Scanner in = new Scanner(System.in);
 
-    Game game = new Game(board);
-    game.displayBoard();
+      Board board = new Board ('a', 'd');
+      Game game = new Game(board);
 
+      Player white = new Player(game, board, Colour.WHITE, false);
+      Player black = new Player(game, board, Colour.BLACK, true);
+      white.setOpponent(black);
+      white.setOpponent(black);
+
+      while (!game.isFinished()) {
+        game.displayBoard();
+        Player player = null;
+        switch (game.getCurrentPlayer()) {
+          case WHITE:
+            player = white;
+            break;
+          case BLACK:
+            player = black;
+            break;
+        }
+        if (player.isComputerPlayer()) {
+          player.makeMove();
+        } else {
+          String input;
+          Move move;
+          do {
+            System.out.print("Please introduce your next move: ");
+            input = in.nextLine();
+            move = game.parseMove(input);
+          } while (move == null);
+          game.applyMove(move);
+        }
+      }
+    }
+    /*
     Move move1 = game.parseMove("b3");
     game.applyMove(move1);
     game.displayBoard();
+    computer.makeMove();
+    game.displayBoard();
+
 
     Move move2 = game.parseMove("f6");
     game.applyMove(move2);
@@ -39,5 +73,6 @@ public class PawnRace {
     Move move8 = game.parseMove("bxc6");
     game.applyMove(move8);
     game.displayBoard();
+    */
   }
 }

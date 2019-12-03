@@ -9,6 +9,7 @@ public class Game {
     moves = new Move[100];
     index = 0;
     currentPlayer = Colour.WHITE;
+    whitePawns = blackPawns = 7;
   }
 
   public Colour getCurrentPlayer() {
@@ -66,8 +67,7 @@ public class Game {
   }
 
   public boolean isFinished() {
-    int whitePawns = 0, blackPawns = 0;
-    if (getLastMove().getTo().getX() == 0 || getLastMove().getTo().getX() == 7) {
+    if (index > 0 && (getLastMove().getTo().getX() == 0 || getLastMove().getTo().getX() == 7)) {
       return true;
     }
     if (whitePawns == 0 || blackPawns == 0) {
@@ -144,10 +144,13 @@ public class Game {
       return new Move(from, to, false, false);
     }
     else if (san.indexOf('x') == 1) {
+      if (san.length() != 4) {
+        return null;
+      }
       char firstLetter = Character.toLowerCase(san.charAt(0));
       char secondLetter = Character.toLowerCase(san.charAt(2));
       char digit = san.charAt(3);
-      if (san.length() > 4 || firstLetter < 'a' || firstLetter > 'h') {
+      if (firstLetter < 'a' || firstLetter > 'h') {
         return null;
       }
       if (secondLetter < 'a' || secondLetter > 'h' || digit < '1' || digit > '8') {
@@ -166,7 +169,7 @@ public class Game {
         return null;
       }
       Square to = board.getSquare(toX, toY);
-      if (to.getOccupier() != Colour.NONE && to.getOccupier() != currentPlayer) {
+      if (to.getOccupier() == currentPlayer.opposite()) {
         return new Move(from, to, true, false);
       }
       Square lastMoveFrom = getLastMove().getFrom();
@@ -182,6 +185,7 @@ public class Game {
   }
 
   public void displayBoard() {
+    System.out.println();
     board.display();
   }
 }

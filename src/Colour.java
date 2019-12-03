@@ -9,4 +9,15 @@ public enum Colour {
   Colour(int offset) {
     this.offset = offset;
   }
+
+  Colour opposite() {
+    switch (this) {
+      case BLACK:
+        return Colour.WHITE;
+      case WHITE:
+        return Colour.BLACK;
+      default:
+        return Colour.NONE;
+    }
+  }
 }
