@@ -27,20 +27,20 @@ public class Player {
   }
 
   public Square[] getAllPawns() {
-    Square[] squares = new Square[7];
-    int index = -1;
+    List<Square> squares = new ArrayList<>();
     for (int i = 0; i <= 7; i++) {
       for (int j = 0; j <= 7; j++) {
         if (board.getSquare(i, j).getOccupier() == colour) {
-          squares[++index] = board.getSquare(i, j);
+          squares.add(board.getSquare(i, j));
         }
       }
     }
-    return squares;
+    Square[] squaresArray = squares.toArray(new Square[squares.size()]);
+    return squaresArray;
   }
 
   public Move[] getAllValidMoves() {
-    List<Move> moves = new ArrayList<Move>();
+    List<Move> moves = new ArrayList<>();
     for (Square pawn : getAllPawns()) {
       String[] possibilities = getPossibilities(pawn.getSAN());
       for (String possibility : possibilities) {
@@ -86,6 +86,7 @@ public class Player {
       Move[] moves = getAllValidMoves();
       int n = new Random().nextInt(moves.length);
       game.applyMove(moves[n]);
+      System.out.println("\nThe computer moved: " + moves[n].getSAN());
     }
   }
 }

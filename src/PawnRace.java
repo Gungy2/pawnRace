@@ -5,7 +5,17 @@ public class PawnRace {
     while (true) {
       Scanner in = new Scanner(System.in);
 
-      Board board = new Board ('a', 'd');
+      char whiteGap, blackGap;
+      do {
+        System.out.print("\nWhite, introduce the line where you will have a gap: ");
+        whiteGap = in.nextLine().charAt(0);
+      } while (whiteGap < 'a' || whiteGap > 'h');
+      do {
+        System.out.print("\nBlack, introduce the line where you will have a gap: ");
+        blackGap = in.nextLine().charAt(0);
+      } while (blackGap < 'a' || blackGap > 'h');
+
+      Board board = new Board (whiteGap, blackGap);
       Game game = new Game(board);
 
       Player white = new Player(game, board, Colour.WHITE, false);
@@ -37,42 +47,16 @@ public class PawnRace {
           game.applyMove(move);
         }
       }
+      game.displayBoard();
+
+      System.out.println("Congratulations, " + game.getGameResult() + "! You won!");
+      System.out.println("Do you want to play again? (Y/N)");
+
+      char input = in.next().charAt(0);
+      if (Character.toLowerCase(input) != 'y') {
+        System.out.println("Thank you for playing!");
+        break;
+      }
     }
-    /*
-    Move move1 = game.parseMove("b3");
-    game.applyMove(move1);
-    game.displayBoard();
-    computer.makeMove();
-    game.displayBoard();
-
-
-    Move move2 = game.parseMove("f6");
-    game.applyMove(move2);
-    game.displayBoard();
-
-    Move move3 = game.parseMove("b4");
-    game.applyMove(move3);
-    game.displayBoard();
-
-    Move move4 = game.parseMove("f5");
-    game.applyMove(move4);
-    game.displayBoard();
-
-    Move move5 = game.parseMove("b5");
-    game.applyMove(move5);
-    game.displayBoard();
-
-    Move move6 = game.parseMove("c5");
-    game.applyMove(move6);
-    game.displayBoard();
-
-    Move move7 = game.parseMove("bxc6");
-    game.applyMove(move7);
-    game.displayBoard();
-
-    Move move8 = game.parseMove("bxc6");
-    game.applyMove(move8);
-    game.displayBoard();
-    */
   }
 }

@@ -187,5 +187,6 @@ public class Game {
   public void displayBoard() {
     System.out.println();
     board.display();
+    System.out.println();
   }
 }

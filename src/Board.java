@@ -45,29 +45,52 @@ public class Board {
   public void display() {
     System.out.print("    ");
     for (int i = 0; i <= 7; i++) {
-      System.out.print(" " + (char) ('A' + i) + " ");
+      System.out.print(" " + (char) ('A' + i) + "  ");
     }
-    System.out.print("\n\n");
+    System.out.print("\n   ┌─");
+    for (int j = 0; j <= 6; j++) {
+      System.out.print("──┬─");
+    }
+    System.out.println("──┐");
     for (int i = 0; i <= 7; i++) {
-      System.out.print((8 - i) + "   ");
+      System.out.print((8 - i) + "  │");
       for (int j = 0; j <= 7; j++) {
         switch (squares[i][j].getOccupier()) {
           case NONE:
-            System.out.print(" . ");
+            System.out.print("   │");
             break;
           case WHITE:
-            System.out.print(" W ");
+            System.out.print(" " + (char) 9817 + " │");
             break;
           case BLACK:
-            System.out.print(" B ");
+            System.out.print(" " + (char) 9823 + " │");
             break;
         }
       }
-      System.out.println("   " + (8 - i));
+      System.out.println("  " + (8 - i));
+      if (i < 7) {
+        System.out.print("   ├─");
+      } else {
+        System.out.print("   └─");
+      }
+      if (i < 7) {
+        for (int j = 0; j <= 6; j++) {
+          System.out.print("──┼─");
+        }
+      } else {
+        for (int j = 0; j <= 6; j++) {
+          System.out.print("──┴─");
+        }
+      }
+      if (i < 7) {
+        System.out.println("──┤");
+      } else {
+        System.out.println("──┘");
+      }
     }
-    System.out.print("\n    ");
+    System.out.print("    ");
     for (int i = 0; i <= 7; i++) {
-      System.out.print(" " + (char) ('A' + i) + " ");
+      System.out.print(" " + (char) ('A' + i) + "  ");
     }
     System.out.println();
   }
