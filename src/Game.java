@@ -166,10 +166,17 @@ public class Game {
         return null;
       }
       Square to = board.getSquare(toX, toY);
-      if (to.getOccupier() == Colour.NONE || to.getOccupier() == currentPlayer) {
-        return null;
+      if (to.getOccupier() != Colour.NONE && to.getOccupier() != currentPlayer) {
+        return new Move(from, to, true, false);
       }
-      return new Move(from, to, true, false);
+      Square lastMoveFrom = getLastMove().getFrom();
+      Square lastMoveTo = getLastMove().getTo();
+      if (lastMoveTo.getX() == toX + 1 && lastMoveTo.getY() == toY) {
+        if (lastMoveFrom.getX() == toX - 1 && lastMoveFrom.getY() == toY) {
+          return new Move (from, to, true, true);
+        }
+      }
+      return null;
     }
     return null;
   }

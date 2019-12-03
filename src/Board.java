@@ -28,6 +28,9 @@ public class Board {
     Square to = move.getTo();
     squares[to.getX()][to.getY()].setOccupier(player);
     squares[from.getX()][from.getY()].setOccupier(Colour.NONE);
+    if (move.isEnPassantCapture()) {
+      squares[from.getX()][to.getY()].setOccupier(Colour.NONE);
+    }
   }
 
   public void unapplyMove(Move move) {

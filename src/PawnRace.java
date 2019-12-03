@@ -8,25 +8,36 @@ public class PawnRace {
     Game game = new Game(board);
     game.displayBoard();
 
-    Move move1 = game.parseMove("b1");
+    Move move1 = game.parseMove("b3");
     game.applyMove(move1);
     game.displayBoard();
 
-    Move move2 = game.parseMove("c6");
+    Move move2 = game.parseMove("f6");
     game.applyMove(move2);
     game.displayBoard();
 
-    Move move3 = game.parseMove("b2");
+    Move move3 = game.parseMove("b4");
     game.applyMove(move3);
     game.displayBoard();
-    /*
-    Move move4 = game.parseMove("c5");
+
+    Move move4 = game.parseMove("f5");
     game.applyMove(move4);
     game.displayBoard();
 
-    Move move5 = game.parseMove("bxc5");
+    Move move5 = game.parseMove("b5");
     game.applyMove(move5);
     game.displayBoard();
-    */
+
+    Move move6 = game.parseMove("c5");
+    game.applyMove(move6);
+    game.displayBoard();
+
+    Move move7 = game.parseMove("bxc6");
+    game.applyMove(move7);
+    game.displayBoard();
+
+    Move move8 = game.parseMove("bxc6");
+    game.applyMove(move8);
+    game.displayBoard();
   }
 }
