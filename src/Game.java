@@ -44,7 +44,6 @@ public class Game {
       }
     }
     changePlayer();
-
   }
 
   public void unapplyMove() {
@@ -112,15 +111,70 @@ public class Game {
   }
 
   public Move parseMove(String san) {
-    char letter = Character.toLowerCase(san.charAt(0));
-    char digit = san.charAt(1);
-    if (san.length() > 2 || letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
-      return null;
+    if (san.indexOf('x') == -1) {
+      char letter = Character.toLowerCase(san.charAt(0));
+      char digit = san.charAt(1);
+      if (san.length() > 2 || letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
+        return null;
+      }
+      int y = letter - 'a';
+      int x = 8 - (digit - '0');
+      if (x == 0 && currentPlayer == Colour.BLACK) {
+        return null;
+      }
+      if (x == 7 && currentPlayer == Colour.WHITE) {
+        return null;
+      }
+      Square to = board.getSquare(x, y);
+      if (to.getOccupier() != Colour.NONE) {
+        return null;
+      }
+      Square from;
+      if (board.getSquare(x - currentPlayer.offset, y).getOccupier() != currentPlayer) {
+        int line = currentPlayer == Colour.WHITE ? 6 : 1;
+        if (x - 2 * currentPlayer.offset == line && board.getSquare(line, y).getOccupier() == currentPlayer) {
+          from = board.getSquare(line, y);
+        } else {
+          return null;
+        }
+      } else {
+        from = board.getSquare(x - currentPlayer.offset, y);
+      }
+
+      return new Move(from, to, false, false);
     }
-    int y = san.charAt(0) - 'a';
-    int x = 8 - san.charAt(1) - '0';
-    Square to = board.getSquare(x, y);
-    Square from = board.getSquare(x+1, y);
-    return new Move(from, to, true, false);
+    else if (san.indexOf('x') == 1) {
+      char firstLetter = Character.toLowerCase(san.charAt(0));
+      char secondLetter = Character.toLowerCase(san.charAt(2));
+      char digit = san.charAt(3);
+      if (san.length() > 4 || firstLetter < 'a' || firstLetter > 'h') {
+        return null;
+      }
+      if (secondLetter < 'a' || secondLetter > 'h' || digit < '1' || digit > '8') {
+        return null;
+      }
+      int fromY = firstLetter -'a';
+      int toY = secondLetter - 'a';
+      int toX = 8 - (digit - '0');
+      Square from;
+      if (fromY == toY - 1 || fromY == toY + 1) {
+        from = board.getSquare(toX - currentPlayer.offset, fromY);
+        if (from.getOccupier() != currentPlayer) {
+          return null;
+        }
+      } else {
+        return null;
+      }
+      Square to = board.getSquare(toX, toY);
+      if (to.getOccupier() == Colour.NONE || to.getOccupier() == currentPlayer) {
+        return null;
+      }
+      return new Move(from, to, true, false);
+    }
+    return null;
+  }
+
+  public void displayBoard() {
+    board.display();
   }
 }

@@ -26,8 +26,8 @@ public class Board {
     Square from = move.getFrom();
     Colour player = from.getOccupier();
     Square to = move.getTo();
-    squares[from.getX()][from.getY()].setOccupier(Colour.NONE);
     squares[to.getX()][to.getY()].setOccupier(player);
+    squares[from.getX()][from.getY()].setOccupier(Colour.NONE);
   }
 
   public void unapplyMove(Move move) {
@@ -66,5 +66,6 @@ public class Board {
     for (int i = 0; i <= 7; i++) {
       System.out.print(" " + (char) ('A' + i) + " ");
     }
+    System.out.println();
   }
 }

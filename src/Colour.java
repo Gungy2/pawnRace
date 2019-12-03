@@ -1,5 +1,12 @@
 public enum Colour {
-  BLACK,
-  WHITE,
-  NONE
+  BLACK(1),
+  WHITE(-1),
+  NONE(0)
+  ;
+
+  public final int offset;
+
+  Colour(int offset) {
+    this.offset = offset;
+  }
 }
