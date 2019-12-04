@@ -1,4 +1,4 @@
-public class Board {
+public class Board implements Cloneable {
   private Square[][] squares;
 
   public Board(char whiteGap, char blackGap) {
@@ -38,8 +38,16 @@ public class Board {
     Colour playerFrom = from.getOccupier();
     Square to = move.getTo();
     Colour playerTo = to.getOccupier();
-    squares[from.getX()][from.getY()].setOccupier(playerFrom);
-    squares[to.getX()][to.getY()].setOccupier(playerTo);
+    squares[from.getX()][from.getY()].setOccupier(playerTo);
+    if (move.isEnPassantCapture()) {
+      squares[to.getX()][to.getY()].setOccupier(Colour.NONE);
+      squares[to.getX() - playerTo.offset][to.getY()].setOccupier(playerTo.opposite());
+    }
+    else if (move.isCapture()) {
+      squares[to.getX()][to.getY()].setOccupier(playerTo.opposite());
+    } else {
+      squares[to.getX()][to.getY()].setOccupier(playerFrom);
+    }
   }
 
   public void display() {

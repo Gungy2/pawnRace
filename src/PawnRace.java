@@ -21,7 +21,7 @@ public class PawnRace {
       Player white = new Player(game, board, Colour.WHITE, false);
       Player black = new Player(game, board, Colour.BLACK, true);
       white.setOpponent(black);
-      white.setOpponent(black);
+      black.setOpponent(white);
 
       while (!game.isFinished()) {
         game.displayBoard();

@@ -1,4 +1,4 @@
-public class Game {
+public class Game implements Cloneable {
   private Board board;
   private Move[] moves;
   private int index, whitePawns, blackPawns;
@@ -71,6 +71,7 @@ public class Game {
       return true;
     }
     if (whitePawns == 0 || blackPawns == 0) {
+      System.err.println("GAME ENDED BCS OF NO PAWNS");
       return true;
     }
     for (int i = 0; i <= 7; i++) {
@@ -112,6 +113,9 @@ public class Game {
 
   public Move parseMove(String san) {
     if (san.indexOf('x') == -1) {
+      if (san.length() != 2) {
+        return null;
+      }
       char letter = Character.toLowerCase(san.charAt(0));
       char digit = san.charAt(1);
       if (san.length() > 2 || letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
@@ -133,6 +137,9 @@ public class Game {
       if (board.getSquare(x - currentPlayer.offset, y).getOccupier() != currentPlayer) {
         int line = currentPlayer == Colour.WHITE ? 6 : 1;
         if (x - 2 * currentPlayer.offset == line && board.getSquare(line, y).getOccupier() == currentPlayer) {
+          if (board.getSquare(line + currentPlayer.offset, y).getOccupier() != Colour.NONE) {
+            return null;
+          }
           from = board.getSquare(line, y);
         } else {
           return null;
