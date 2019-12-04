@@ -37,10 +37,10 @@ public class Game implements Cloneable {
     if (move.isCapture()) {
       switch (currentPlayer) {
         case BLACK:
-          blackPawns--;
+          whitePawns--;
           break;
         case WHITE:
-          whitePawns--;
+          blackPawns--;
           break;
       }
     }
@@ -71,34 +71,25 @@ public class Game implements Cloneable {
       return true;
     }
     if (whitePawns == 0 || blackPawns == 0) {
-      System.err.println("GAME ENDED BCS OF NO PAWNS");
       return true;
     }
+    // Testing for stalemate
+    Colour colour;
     for (int i = 0; i <= 7; i++) {
       for (int j = 0; j <= 7; j++) {
-        switch (board.getSquare(i, j).getOccupier()) {
-          case BLACK:
-            if (board.getSquare(i + 1, j).getOccupier() == Colour.NONE) {
-              return false;
-            }
-            if (j > 0 && board.getSquare(i + 1, j - 1).getOccupier() == Colour.WHITE) {
-              return false;
-            }
-            if (j < 7 && board.getSquare(i + 1, j + 1).getOccupier() == Colour.WHITE) {
-              return false;
-            }
-            break;
-          case WHITE:
-            if (board.getSquare(i - 1, j).getOccupier() == Colour.NONE) {
-              return false;
-            }
-            if (j > 0 && board.getSquare(i - 1, j - 1).getOccupier() == Colour.BLACK) {
-              return false;
-            }
-            if (j < 7 && board.getSquare(i - 1, j + 1).getOccupier() == Colour.BLACK) {
-              return false;
-            }
-            break;
+        colour = board.getSquare(i, j).getOccupier();
+        if (colour != Colour.NONE) {
+          if (board.getSquare(i + colour.offset, j).getOccupier() == Colour.NONE) {
+            return false;
+          }
+          if (j > 0
+              && board.getSquare(i + colour.offset, j - 1).getOccupier() == colour.opposite()) {
+            return false;
+          }
+          if (j < 7
+              && board.getSquare(i + colour.offset, j + 1).getOccupier() == colour.opposite()) {
+            return false;
+          }
         }
       }
     }
@@ -106,8 +97,12 @@ public class Game implements Cloneable {
   }
 
   public Colour getGameResult() {
-    if (blackPawns == 0 || getLastMove().getTo().getX() == 0) return Colour.WHITE;
-    if (whitePawns == 0 || getLastMove().getTo().getX() == 7) return Colour.BLACK;
+    if (blackPawns == 0 || getLastMove().getTo().getX() == 0) {
+      return Colour.WHITE;
+    }
+    if (whitePawns == 0 || getLastMove().getTo().getX() == 7) {
+      return Colour.BLACK;
+    }
     return Colour.NONE;
   }
 

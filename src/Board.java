@@ -68,10 +68,10 @@ public class Board implements Cloneable {
             System.out.print("   │");
             break;
           case WHITE:
-            System.out.print(" " + (char) 9817 + " │");
+            System.out.print(" " + (char) 9823 + " │");
             break;
           case BLACK:
-            System.out.print(" " + (char) 9823 + " │");
+            System.out.print(" " + (char) 9817 + " │");
             break;
         }
       }
