@@ -141,15 +141,15 @@ public class Player {
   void makeMove() {
     if (isComputerPlayer) {
       List<Move> moves = new ArrayList<>();
-      boolean ok;
+      boolean ok, goodMove;
       if (getPassedPawn() != null) {
         moves = getPawnValidMoved(getPassedPawn());
-        System.out.println("I HAVE A PAST PAWN!!!");
       }
       else {
         List<Move> movesTrial = getAllValidMoves();
         for (Move move : movesTrial) {
           game.applyMove(move);
+          goodMove = true;
           if (getPassedPawn() != null) {
             moves.add(move);
             game.unapplyMove();
@@ -157,6 +157,9 @@ public class Player {
           }
           else if (opponent.getPassedPawn() == null) {
             List<Move> opponentMoves = opponent.getAllValidMoves();
+            if (getPassedPawn() == null) {
+              goodMove = false;
+            }
             ok = true;
             for (Move opponentMove : opponentMoves) {
               game.applyMove(opponentMove);
@@ -165,7 +168,7 @@ public class Player {
               }
               game.unapplyMove();
             }
-            if (ok) {
+            if (ok || goodMove) {
               moves.add(move);
             }
           }
@@ -175,7 +178,6 @@ public class Player {
           moves = getAllValidMoves();
         }
       }
-      System.out.println(moves.size());
       List<Move> captureMoves = new ArrayList<>();
       for (Move move : moves) {
         if (move.isCapture()) {
