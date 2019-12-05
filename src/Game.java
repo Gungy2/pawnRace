@@ -176,8 +176,8 @@ public class Game implements Cloneable {
       }
       Square lastMoveFrom = getLastMove().getFrom();
       Square lastMoveTo = getLastMove().getTo();
-      if (lastMoveTo.getX() == toX + 1 && lastMoveTo.getY() == toY) {
-        if (lastMoveFrom.getX() == toX - 1 && lastMoveFrom.getY() == toY) {
+      if (lastMoveTo.getX() == toX - currentPlayer.offset && lastMoveTo.getY() == toY) {
+        if (lastMoveFrom.getX() == toX + currentPlayer.offset && lastMoveFrom.getY() == toY) {
           return new Move (from, to, true, true);
         }
       }

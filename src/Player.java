@@ -98,11 +98,27 @@ public class Player {
     return moves;
   }
 
+  public Colour getBestPawn() {
+    if (getPassedPawn() != null && opponent.getPassedPawn() != null) {
+      if (Math.abs(colour.margin - getPassedPawn().getX()) < Math.abs(opponent.colour.margin - opponent.getPassedPawn().getX())) {
+        return colour;
+      }
+      return opponent.colour;
+    }
+    if (getPassedPawn() != null) {
+      return colour;
+    }
+    if (opponent.getPassedPawn() != null) {
+      return opponent.colour;
+    }
+    return Colour.NONE;
+  }
+
   private Square getPassedPawn() {
     switch (colour) {
       case WHITE:
         for (int i = 1; i < 7; i++) {
-          for (int j = 1; j < 7; j++) {
+          for (int j = 0; j <= 7; j++) {
             if (isPassedPawn(board.getSquare(i, j))) {
               return board.getSquare(i, j);
             }
@@ -111,7 +127,7 @@ public class Player {
         break;
       case BLACK:
         for (int i = 6; i > 0; i--) {
-          for (int j = 6; j > 0; j--) {
+          for (int j = 7; j >= 0; j--) {
             if (isPassedPawn(board.getSquare(i, j))) {
               return board.getSquare(i, j);
             }
@@ -123,9 +139,9 @@ public class Player {
   }
 
   void makeMove() {
-    List<Move> moves = new ArrayList<>();
-    boolean ok;
     if (isComputerPlayer) {
+      List<Move> moves = new ArrayList<>();
+      boolean ok;
       if (getPassedPawn() != null) {
         moves = getPawnValidMoved(getPassedPawn());
         System.out.println("I HAVE A PAST PAWN!!!");
@@ -134,11 +150,15 @@ public class Player {
         List<Move> movesTrial = getAllValidMoves();
         for (Move move : movesTrial) {
           game.applyMove(move);
-          if (opponent.getPassedPawn() == null) {
+          if (getBestPawn() == colour) {
+            moves.add(move);
+            game.unapplyMove();
+            break;
+          }
+          else if (opponent.getPassedPawn() == null) {
             List<Move> opponentMoves = opponent.getAllValidMoves();
             ok = true;
             for (Move opponentMove : opponentMoves) {
-              System.out.println(opponentMove.getSAN());
               game.applyMove(opponentMove);
               if (opponent.getPassedPawn() != null || opponentMove.isCapture()) {
                 ok = false;
@@ -146,30 +166,28 @@ public class Player {
               game.unapplyMove();
             }
             if (ok) {
-              System.out.println("SOMETHING GOT ADDED");
               moves.add(move);
             }
           }
           game.unapplyMove();
         }
         if (moves.size() == 0) {
-          System.err.println("This shit got called!");
           moves = getAllValidMoves();
         }
       }
-    }
-    System.out.println(moves.size());
-    List<Move> captureMoves = new ArrayList<>();
-    for (Move move : moves) {
-      if (move.isCapture()) {
-        captureMoves.add(move);
+      System.out.println(moves.size());
+      List<Move> captureMoves = new ArrayList<>();
+      for (Move move : moves) {
+        if (move.isCapture()) {
+          captureMoves.add(move);
+        }
       }
+      if (captureMoves.size() != 0) {
+        moves = captureMoves;
+      }
+      int n = new Random().nextInt(moves.size());
+      game.applyMove(moves.get(n));
+      System.out.println("\nThe computer moved: " + moves.get(n).getSAN());
     }
-    if (captureMoves.size() != 0) {
-      moves = captureMoves;
-    }
-    int n = new Random().nextInt(moves.size());
-    game.applyMove(moves.get(n));
-    System.out.println("\nThe computer moved: " + moves.get(n).getSAN());
   }
 }
