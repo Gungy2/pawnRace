@@ -48,13 +48,17 @@ public class PawnRace {
         }
       }
       game.displayBoard();
-
-      System.out.println("Congratulations, " + game.getGameResult() + "! You won!");
+      if (game.getGameResult() != Colour.NONE) {
+        System.out.println("Congratulations, " + game.getGameResult() + "! You won!");
+      } else {
+        System.out.println("Sorry, it is a stalemate!");
+      }
       System.out.println("Do you want to play again? (Y/N)");
 
       char input = in.next().charAt(0);
       if (Character.toLowerCase(input) != 'y') {
         System.out.println("Thank you for playing!");
+        in.close();
         break;
       }
     }

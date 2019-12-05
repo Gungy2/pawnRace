@@ -150,7 +150,7 @@ public class Player {
         List<Move> movesTrial = getAllValidMoves();
         for (Move move : movesTrial) {
           game.applyMove(move);
-          if (getBestPawn() == colour) {
+          if (getPassedPawn() != null) {
             moves.add(move);
             game.unapplyMove();
             break;
