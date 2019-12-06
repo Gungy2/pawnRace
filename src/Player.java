@@ -35,8 +35,7 @@ public class Player {
         }
       }
     }
-    Square[] squaresArray = squares.toArray(new Square[squares.size()]);
-    return squaresArray;
+    return squares.toArray(new Square[squares.size()]);
   }
 
   public List<Move> getAllValidMoves() {
@@ -114,6 +113,16 @@ public class Player {
     return Colour.NONE;
   }
 
+  List<Move> getCaptureMoves(Square square) {
+    List<Move> captureMoves = new ArrayList<>();
+    for (Move move : getAllValidMoves()) {
+      if (move.isCapture() && move.getTo() == square) {
+        captureMoves.add(move);
+      }
+    }
+    return captureMoves;
+  }
+
   private Square getPassedPawn() {
     switch (colour) {
       case WHITE:
@@ -178,15 +187,37 @@ public class Player {
           moves = getAllValidMoves();
         }
       }
+
+      Square opponentGoodPawn = null;
+      for (Move move : getAllValidMoves()) {
+        game.applyMove(move);
+        for (Move opponentMove : opponent.getAllValidMoves()) {
+          game.applyMove(opponentMove);
+          if (opponent.getPassedPawn() != null) {
+            opponentGoodPawn = opponentMove.getFrom();
+            System.out.println("GOTCHA!");
+          }
+          game.unapplyMove();
+        }
+        game.unapplyMove();
+      }
+
+      if (opponentGoodPawn != null && getCaptureMoves(opponentGoodPawn).size() != 0) {
+        moves.clear();
+        moves = getCaptureMoves(opponentGoodPawn);
+      }
+
       List<Move> captureMoves = new ArrayList<>();
       for (Move move : moves) {
         if (move.isCapture()) {
           captureMoves.add(move);
         }
       }
+
       if (captureMoves.size() != 0) {
         moves = captureMoves;
       }
+
       int n = new Random().nextInt(moves.size());
       game.applyMove(moves.get(n));
       System.out.println("\nThe computer moved: " + moves.get(n).getSAN());
