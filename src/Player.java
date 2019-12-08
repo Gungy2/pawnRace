@@ -6,12 +6,14 @@ public class Player {
   private Colour colour;
   private boolean isComputerPlayer;
   private Player opponent;
+  private char gap;
 
-  public Player(Game game, Board board, Colour colour, boolean isComputerPlayer) {
+  public Player(Game game, Board board, Colour colour, boolean isComputerPlayer, char gap) {
     this.game = game;
     this.board = board;
     this.colour = colour;
     this.isComputerPlayer = isComputerPlayer;
+    this.gap = gap;
   }
 
   public void setOpponent(Player opponent) {
@@ -183,11 +185,7 @@ public class Player {
           }
           game.unapplyMove();
         }
-        if (moves.size() == 0) {
-          moves = getAllValidMoves();
-        }
       }
-
       Square opponentGoodPawn = null;
       for (Move move : getAllValidMoves()) {
         game.applyMove(move);
@@ -195,7 +193,6 @@ public class Player {
           game.applyMove(opponentMove);
           if (opponent.getPassedPawn() != null) {
             opponentGoodPawn = opponentMove.getFrom();
-            System.out.println("GOTCHA!");
           }
           game.unapplyMove();
         }
@@ -207,10 +204,18 @@ public class Player {
         moves = getCaptureMoves(opponentGoodPawn);
       }
 
+      if (moves.size() == 0) {
+        moves = getAllValidMoves();
+      }
+
       List<Move> captureMoves = new ArrayList<>();
       for (Move move : moves) {
         if (move.isCapture()) {
-          captureMoves.add(move);
+          game.applyMove(move);
+          if (!(game.isFinished() && game.getGameResult() == Colour.NONE)) {
+            captureMoves.add(move);
+          }
+          game.unapplyMove();
         }
       }
 
@@ -218,6 +223,27 @@ public class Player {
         moves = captureMoves;
       }
 
+      if (game.getNrMoves() < 4) {
+        moves.clear();
+        String line;
+        switch (colour) {
+          case BLACK:
+            line = "6";
+            break;
+          default:
+            line = "3";
+            break;
+        }
+        if (game.parseMove((char)(gap - 2) + line) != null) {
+          moves.add(game.parseMove((char)(gap - 2) + line));
+        }
+        if (game.parseMove((char)(gap + 2) + line) != null) {
+          moves.add(game.parseMove((char)(gap + 2) + line));
+        }
+      }
+      for (Move move : moves) {
+        System.out.println(move.getSAN());
+      }
       int n = new Random().nextInt(moves.size());
       game.applyMove(moves.get(n));
       System.out.println("\nThe computer moved: " + moves.get(n).getSAN());

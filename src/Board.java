@@ -1,4 +1,4 @@
-public class Board implements Cloneable {
+public class Board {
   private Square[][] squares;
 
   public Board(char whiteGap, char blackGap) {

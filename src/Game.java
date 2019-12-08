@@ -1,4 +1,4 @@
-public class Game implements Cloneable {
+public class Game {
   private Board board;
   private Move[] moves;
   private int index, whitePawns, blackPawns;
@@ -21,6 +21,10 @@ public class Game implements Cloneable {
       return moves[index-1];
     }
     return null;
+  }
+
+  public int getNrMoves() {
+    return index;
   }
 
   private void changePlayer() {
@@ -49,9 +53,8 @@ public class Game implements Cloneable {
 
   public void unapplyMove() {
     if (index > 0) {
-      Move move = moves[index-1];
+      Move move = moves[--index];
       board.unapplyMove(move);
-      index--;
       if (move.isCapture()) {
         switch (currentPlayer) {
           case BLACK:
@@ -78,7 +81,7 @@ public class Game implements Cloneable {
     for (int i = 0; i <= 7; i++) {
       for (int j = 0; j <= 7; j++) {
         colour = board.getSquare(i, j).getOccupier();
-        if (colour != Colour.NONE) {
+        if (colour == currentPlayer) {
           if (board.getSquare(i + colour.offset, j).getOccupier() == Colour.NONE) {
             return false;
           }
