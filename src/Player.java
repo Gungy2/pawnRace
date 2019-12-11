@@ -162,9 +162,7 @@ public class Player {
           game.applyMove(move);
           goodMove = true;
           if (getPassedPawn() != null) {
-            moves.add(move);
-            game.unapplyMove();
-            break;
+            return;
           }
           else if (opponent.getPassedPawn() == null) {
             List<Move> opponentMoves = opponent.getAllValidMoves();
@@ -207,7 +205,6 @@ public class Player {
       if (moves.size() == 0) {
         moves = getAllValidMoves();
       }
-
       List<Move> captureMoves = new ArrayList<>();
       for (Move move : moves) {
         if (move.isCapture()) {
@@ -224,7 +221,6 @@ public class Player {
       }
 
       if (game.getNrMoves() < 4) {
-        moves.clear();
         String line;
         switch (colour) {
           case BLACK:
@@ -233,6 +229,9 @@ public class Player {
           default:
             line = "3";
             break;
+        }
+        if (game.parseMove((char)(gap - 2) + line) != null || game.parseMove((char)(gap + 2) + line) != null) {
+          moves.clear();
         }
         if (game.parseMove((char)(gap - 2) + line) != null) {
           moves.add(game.parseMove((char)(gap - 2) + line));
@@ -243,6 +242,9 @@ public class Player {
       }
       for (Move move : moves) {
         System.out.println(move.getSAN());
+      }
+      if (moves.size() == 0) {
+        moves = getAllValidMoves();
       }
       int n = new Random().nextInt(moves.size());
       game.applyMove(moves.get(n));

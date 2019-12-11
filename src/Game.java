@@ -177,6 +177,7 @@ public class Game {
       if (to.getOccupier() == currentPlayer.opposite()) {
         return new Move(from, to, true, false);
       }
+      if (index == 0) return null;
       Square lastMoveFrom = getLastMove().getFrom();
       Square lastMoveTo = getLastMove().getTo();
       if (lastMoveTo.getX() == toX - currentPlayer.offset && lastMoveTo.getY() == toY) {
