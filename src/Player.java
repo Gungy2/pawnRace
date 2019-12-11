@@ -240,12 +240,11 @@ public class Player {
           moves.add(game.parseMove((char)(gap + 2) + line));
         }
       }
-      for (Move move : moves) {
-        System.out.println(move.getSAN());
-      }
+
       if (moves.size() == 0) {
         moves = getAllValidMoves();
       }
+
       int n = new Random().nextInt(moves.size());
       game.applyMove(moves.get(n));
       System.out.println("\nThe computer moved: " + moves.get(n).getSAN());

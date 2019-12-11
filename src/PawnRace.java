@@ -19,7 +19,7 @@ public class PawnRace {
       Game game = new Game(board);
 
       Player white = new Player(game, board, Colour.WHITE, true, whiteGap);
-      Player black = new Player(game, board, Colour.BLACK, true, blackGap);
+      Player black = new Player(game, board, Colour.BLACK, false, blackGap);
       //System.out.println((char) (blackGap-2));
       white.setOpponent(black);
       black.setOpponent(white);
