@@ -1,12 +1,12 @@
 import java.util.*;
 
 public class Player {
-  private Game game;
-  private Board board;
-  private Colour colour;
-  private boolean isComputerPlayer;
+  private final Game game;
+  private final Board board;
+  private final Colour colour;
+  private final boolean isComputerPlayer;
   private Player opponent;
-  private char gap;
+  private final char gap;
 
   public Player(Game game, Board board, Colour colour, boolean isComputerPlayer, char gap) {
     this.game = game;
@@ -19,11 +19,7 @@ public class Player {
   public void setOpponent(Player opponent) {
     this.opponent = opponent;
   }
-
-  public Colour getColour() {
-    return colour;
-  }
-
+  
   public boolean isComputerPlayer() {
     return isComputerPlayer;
   }
@@ -37,7 +33,7 @@ public class Player {
         }
       }
     }
-    return squares.toArray(new Square[squares.size()]);
+    return squares.toArray(new Square[0]);
   }
 
   public List<Move> getAllValidMoves() {
@@ -79,12 +75,10 @@ public class Player {
   }
 
   private boolean isOK (int i, int margin, Colour colour) {
-    switch (colour) {
-      case WHITE:
-        return i > margin;
-      default:
-        return i < margin;
+    if (colour == Colour.WHITE) {
+      return i > margin;
     }
+    return i < margin;
   }
 
   private List<Move> getPawnValidMoved(Square pawn) {
@@ -98,23 +92,7 @@ public class Player {
     }
     return moves;
   }
-
-  public Colour getBestPawn() {
-    if (getPassedPawn() != null && opponent.getPassedPawn() != null) {
-      if (Math.abs(colour.margin - getPassedPawn().getX()) < Math.abs(opponent.colour.margin - opponent.getPassedPawn().getX())) {
-        return colour;
-      }
-      return opponent.colour;
-    }
-    if (getPassedPawn() != null) {
-      return colour;
-    }
-    if (opponent.getPassedPawn() != null) {
-      return opponent.colour;
-    }
-    return Colour.NONE;
-  }
-
+  
   List<Move> getCaptureMoves(Square square) {
     List<Move> captureMoves = new ArrayList<>();
     for (Move move : getAllValidMoves()) {
@@ -222,13 +200,10 @@ public class Player {
 
       if (game.getNrMoves() < 4) {
         String line;
-        switch (colour) {
-          case BLACK:
-            line = "6";
-            break;
-          default:
-            line = "3";
-            break;
+        if (colour == Colour.BLACK) {
+          line = "6";
+        } else {
+          line = "3";
         }
         if (game.parseMove((char)(gap - 2) + line) != null || game.parseMove((char)(gap + 2) + line) != null) {
           moves.clear();

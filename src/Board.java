@@ -1,5 +1,5 @@
 public class Board {
-  private Square[][] squares;
+  private final Square[][] squares;
 
   public Board(char whiteGap, char blackGap) {
     squares = new Square[8][8];
@@ -64,15 +64,9 @@ public class Board {
       System.out.print((8 - i) + "  │");
       for (int j = 0; j <= 7; j++) {
         switch (squares[i][j].getOccupier()) {
-          case NONE:
-            System.out.print("   │");
-            break;
-          case WHITE:
-            System.out.print(" " + (char) 9823 + " │");
-            break;
-          case BLACK:
-            System.out.print(" " + (char) 9817 + " │");
-            break;
+          case NONE -> System.out.print("   │");
+          case WHITE -> System.out.print(" " + (char) 9823 + " │");
+          case BLACK -> System.out.print(" " + (char) 9817 + " │");
         }
       }
       System.out.println("  " + (8 - i));

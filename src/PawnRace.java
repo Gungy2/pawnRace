@@ -18,23 +18,20 @@ public class PawnRace {
       Board board = new Board (whiteGap, blackGap);
       Game game = new Game(board);
 
-      Player white = new Player(game, board, Colour.WHITE, true, whiteGap);
-      Player black = new Player(game, board, Colour.BLACK, false, blackGap);
-      //System.out.println((char) (blackGap-2));
+      Player white = new Player(game, board, Colour.WHITE, false, whiteGap);
+      Player black = new Player(game, board, Colour.BLACK, true, blackGap);
+
       white.setOpponent(black);
       black.setOpponent(white);
 
       while (!game.isFinished()) {
         game.displayBoard();
-        Player player = null;
-        switch (game.getCurrentPlayer()) {
-          case WHITE:
-            player = white;
-            break;
-          case BLACK:
-            player = black;
-            break;
-        }
+        Player player = switch (game.getCurrentPlayer()) {
+          case WHITE -> white;
+          case BLACK -> black;
+          default -> null;
+        };
+        assert player != null;
         if (player.isComputerPlayer()) {
           player.makeMove();
         } else {

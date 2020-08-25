@@ -12,13 +12,10 @@ public enum Colour {
   }
 
   Colour opposite() {
-    switch (this) {
-      case BLACK:
-        return Colour.WHITE;
-      case WHITE:
-        return Colour.BLACK;
-      default:
-        return Colour.NONE;
-    }
+    return switch (this) {
+      case BLACK -> Colour.WHITE;
+      case WHITE -> Colour.BLACK;
+      default -> Colour.NONE;
+    };
   }
 }

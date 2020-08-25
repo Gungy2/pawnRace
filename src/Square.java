@@ -1,5 +1,5 @@
 public class Square {
-  private int x, y;
+  private final int x, y;
   private Colour colour;
 
   public Square (int x, int y) {

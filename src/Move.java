@@ -1,6 +1,6 @@
 public class Move {
-  private Square from, to;
-  private boolean isCapture, isEnPassantCapture;
+  private final Square from, to;
+  private final boolean isCapture, isEnPassantCapture;
 
   public Move(Square from, Square to, boolean isCapture, boolean isEnPassantCapture) {
     this.from = from;

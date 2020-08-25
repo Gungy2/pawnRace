@@ -1,6 +1,6 @@
 public class Game {
-  private Board board;
-  private Move[] moves;
+  private final Board board;
+  private final Move[] moves;
   private int index, whitePawns, blackPawns;
   private Colour currentPlayer;
 
@@ -40,12 +40,8 @@ public class Game {
     board.applyMove(move);
     if (move.isCapture()) {
       switch (currentPlayer) {
-        case BLACK:
-          whitePawns--;
-          break;
-        case WHITE:
-          blackPawns--;
-          break;
+        case BLACK -> whitePawns--;
+        case WHITE -> blackPawns--;
       }
     }
     changePlayer();
@@ -57,12 +53,8 @@ public class Game {
       board.unapplyMove(move);
       if (move.isCapture()) {
         switch (currentPlayer) {
-          case BLACK:
-            blackPawns++;
-            break;
-          case WHITE:
-            whitePawns++;
-            break;
+          case BLACK -> blackPawns++;
+          case WHITE -> whitePawns++;
         }
       }
       changePlayer();
@@ -116,7 +108,7 @@ public class Game {
       }
       char letter = Character.toLowerCase(san.charAt(0));
       char digit = san.charAt(1);
-      if (san.length() > 2 || letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
+      if (letter < 'a' || letter > 'h' || digit < '1' || digit > '8') {
         return null;
       }
       int y = letter - 'a';
